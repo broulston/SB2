@@ -23,8 +23,8 @@ class SB2(object):
 
         self.MANGAID = self.mastar[1].data.field('MANGAID')
         self.NVISITS = self.mastar[1].data.field('NVISITS')
-        self.RA = self.mastar[1].data.field('RA')
-        self.DEC = self.mastar[1].data.field('DEC')
+        self.RA = self.mastar[1].data.field('OBJRA')
+        self.DEC = self.mastar[1].data.field('OBJDEC')
 
         self.PARALLAX = self.mastar[1].data.field('PARALLAX')
         self.PARALLAX_ERROR = self.mastar[1].data.field('PARALLAX_ERROR')
