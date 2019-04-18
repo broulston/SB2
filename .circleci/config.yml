@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies for Python 3.7
-          command: /opt/python/cp37-cp37m/bin/pip install astropy numpy scipy pytest pytest-astropy pytest-xdist Cython jinja2
+          command: /opt/python/cp37-cp37m/bin/pip install astropy numpy scipy matplotlib pytest pytest-astropy pytest-xdist Cython jinja2
       - run:
           name: Run tests for Python 3.7
           command: PYTHONHASHSEED=42 /opt/python/cp37-cp37m/bin/python testing_SB2.py "--durations=50"
