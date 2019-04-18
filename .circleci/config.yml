@@ -7,6 +7,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install dependices for matplotlib
+          command: yum install freetype-devel
+          command: yum install pkg-config
+          command: yum install libpng-devel
+
+      - run:
           name: Install dependencies for Python 3.7
           command: /opt/python/cp37-cp37m/bin/pip install astropy numpy scipy matplotlib pytest pytest-astropy pytest-xdist Cython jinja2
       - run:
