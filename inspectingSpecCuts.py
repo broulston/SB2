@@ -34,6 +34,8 @@ R_EST = mastar[1].data.field('R_EST') * u.pc
 specTypes = mastar[1].data.field('Guessed Spectral Type')
 unique_specTypes = np.unique(specTypes)
 
+specType_SB2_combos = np.array(np.meshgrid(unique_specTypes, unique_specTypes)).T.reshape(-1,2)
+
 orginal_outputDIR = main_dir+"MaStar_spec/"
 converted_outputDIR = main_dir+"MaStar_specLum/"
 header = "wavelength, flux, err"
