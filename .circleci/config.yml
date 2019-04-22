@@ -7,15 +7,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install freetype-devel
-          command: sudo yum install freetype-devel
-      - run:
-          name: install pkg-config
-          command: sudo yum install pkg-config
-      - run:
-          name: install libpng-devel
-          command: sudo yum install libpng-devel
-      - run:
           name: Install dependencies for Python 3.7
           command: /opt/python/cp37-cp37m/bin/pip install astropy numpy scipy matplotlib pytest pytest-astropy pytest-xdist Cython jinja2
       - run:
