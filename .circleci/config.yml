@@ -1,9 +1,9 @@
-version: 2.1
+version: 2
 
 jobs:
   testing:
     docker:
-      - image: quay.io/pypa/manylinux1_i686
+      - image: circleci/python:3.7.3
     steps:
       - checkout
       - run:
@@ -23,11 +23,7 @@ jobs:
           command: PYTHONHASHSEED=42 /opt/python/cp37-cp37m/bin/python testing_SB2.py "--durations=50"
 
 workflows:
-  version: 2.1
-  tests_and_docs:
+  version: 2
+  build_and_test:
     jobs:
       - testing
-
-notify:
-  webhooks:
-    - url: https://giles.cadair.com/circleci 
