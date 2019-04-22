@@ -13,13 +13,26 @@ class SB2(object):
     """SB2 spectrum class
 
     """
-    def __init__(self, spectype1, spectype2, snrCut=100.0):
-        self.snrCut = snrCut
-        self.spectype1 = spectype1
-        self.spectype2 = spectype2
+    def __init__(self, file1, spectype1, file2, spectype2):
+        self.mastar = fits.open(data_dir+'mastarall-gaia-v2_4_3_SDSSDR12_specTypes.fits')
 
-        self.mastar = fits.open(data_dir+'mastarall-gaia-v2_4_3.fits')
-        self.mastarSpec = fits.open(main_dir+'mastar-goodspec-v2_4_3-v1_0_2.fits')
+        self.specTypes = self.mastar[1].data.field('Guessed Spectral Type') 
+        self.unique_specTypes = np.unique(self.specTypes)
+
+        if np.where(self.unique_specTypes == spectype1)[0].size==1 & np.where(self.unique_specTypes == spectype2)[0].size==1:
+            self.spectype1 = spectype1
+            self.spectype2 = spectype2
+            self.file1 = file1
+            self.file2 = file2
+        else:
+            if np.where(self.unique_specTypes == spectype1)[0].size==0 & np.where(self.unique_specTypes == spectype2)[0].size==0:
+                raise ValueError("spectype1 AND spectype2 are not a valid choice!")
+
+            if np.where(self.unique_specTypes == spectype1)[0].size==0:
+                raise ValueError("spectype1 is not a valid choice!")
+
+            if np.where(self.unique_specTypes == spectype2)[0].size==0:
+                raise ValueError( "spectype2 is not a valid choice!")
 
         self.MANGAID = self.mastar[1].data.field('MANGAID')
         self.NVISITS = self.mastar[1].data.field('NVISITS')
@@ -34,31 +47,7 @@ class SB2(object):
         self.outputDIR = main_dir+"MaStar_specLum/"
         self.all_filenames = np.genfromtxt(data_dir+"all_MaStar_spec.txt", dtype='str')
 
-        self.PyHammerResult = np.genfromtxt(data_dir+"PyHammerResults_MaStar.csv", dtype='str', delimiter=",")
-        self.PyHammerResultCondensed = self.PyHammerResult[:,0:4:3]
-
-        for ii in range(self.PyHammerResultCondensed[:,0].size):
-            self.PyHammerResultCondensed[ii,0] = self.PyHammerResultCondensed[ii,0].replace("/", " ").split()[-1][:-4]
-
-        self.connectIndex = np.empty(self.all_filenames.size)
-        for ii in range(self.connectIndex.size):
-            try:
-                self.connectIndex[ii] = np.where(self.PyHammerResultCondensed[:,0] == self.all_filenames[ii])[0][0]
-            except IndexError:
-                self.connectIndex[ii] = np.nan
-
-        self.skipped_spec = np.where(~np.isfinite(self.connectIndex))[0]
-        self.connectIndex = self.connectIndex.astype(int)
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            self.highSNR = np.where(self.PARALLAX_SNR > self.snrCut)[0] 
-
-        self.highSNR_specType = np.empty(self.highSNR.shape, dtype="U3")
-        for ii in range(self.highSNR.size):
-            self.highSNR_specType[ii] = self.PyHammerResultCondensed[self.connectIndex[self.highSNR[ii]],1]
-
-        self._makeCompositeSB2(self.spectype1, self.spectype2)
+        self._makeCompositeSB2(self.file1 , self.file2)
 
     def _interpOntoGrid(self, wavelength, flux): 
         """
@@ -79,23 +68,6 @@ class SB2(object):
         flux = interpFlux[startIndex:stopIndex]
 
         return wavelength, flux
-
-    def _getSpecTypesIndex(self, spectype1, spectype2):
-        ErrorMessage1 = None
-        ErrorMessage2 = None
-        foundspecType_index1 = None
-        foundspecType_index2 = None
-        highSNR_index1 = np.where(self.highSNR_specType == spectype1)[0]
-        if highSNR_index1.size >= 1:
-            foundspecType_index1 = self.highSNR[highSNR_index1[0]]
-        else:
-            ErrorMessage1 = "No found matches to SpecType1"
-        highSNR_index2 = np.where(self.highSNR_specType == spectype2)[0]
-        if highSNR_index2.size >= 1:
-            foundspecType_index2 = self.highSNR[highSNR_index2[0]]
-        else:
-            ErrorMessage2 = "No found matches to SpecType2"
-        return foundspecType_index1, foundspecType_index2, ErrorMessage1, ErrorMessage2
 
     def plotCompositeSB2(self, saveplot=True, plotIndividual=True, filename=None):  
         if plotIndividual:
@@ -127,38 +99,32 @@ class SB2(object):
             plt.close()
 
     def _makeCompositeSB2(self, spectype1, spectype2):
-        self.foundspecType_index1, self.foundspecType_index2, self.ErrorMessage1, self.ErrorMessage2 = self._getSpecTypesIndex(self.spectype1, self.spectype2) 
-        if self.foundspecType_index1==None or self.foundspecType_index2==None:
-            print(self.ErrorMessage1)
-            print(self.ErrorMessage2)
-        else:
-            self.flux = np.zeros(61617)
-            self.wavelength = np.zeros(61617)
-            for ii in [self.foundspecType_index1, self.foundspecType_index2]:
-                MaStarIndex = ii# np.where(all_filenames == PyHammerFilenames[ii])[0]
-                current_filename = self.all_filenames[MaStarIndex]
-                current_spec = np.loadtxt(self.outputDIR+current_filename+".txt", skiprows=1, delimiter=",")
+        self.flux = np.zeros(61617)
+        self.wavelength = np.zeros(61617)
+        self.error = np.zeros(61617)
 
-                if ii == self.foundspecType_index1:
-                    self.wavelengthComponent1 = current_spec[:,0]
-                    self.fluxComponent1 = current_spec[:,1]
-                    self.errorComponent1 = current_spec[:,2]
-                    self.error = self.errorComponent1
-                    self.specComponent1 = np.stack((self.wavelengthComponent1, self.fluxComponent1, self.errorComponent1), axis=1)
-                else:
-                    self.wavelengthComponent2 = current_spec[:,0]
-                    self.fluxComponent2 = current_spec[:,1]
-                    self.errorComponent2 = current_spec[:,2]
-                    self.specComponent2 = np.stack((self.wavelengthComponent2, self.fluxComponent2, self.errorComponent2), axis=1)
 
-                self.wavelength, current_spec_interpFlux = self._interpOntoGrid(current_spec[:,0], current_spec[:,1])
-                self.wavelength, current_spec_interpError = self._interpOntoGrid(current_spec[:,0], current_spec[:,2])
-                if ii == self.foundspecType_index1:
-                    self.error = current_spec_interpError
+        spec1 = np.loadtxt(data_dir+"MaStar_specLum_cuts/"+self.file1, skiprows=1, delimiter=",")
+        self.wavelengthComponent1 = spec1[:,0]
+        self.fluxComponent1 = spec1[:,1]
+        self.errorComponent1 = spec1[:,2]
+        self.specComponent1 = np.stack((self.wavelengthComponent1, self.fluxComponent1, self.errorComponent1), axis=1)
 
-                self.flux += current_spec_interpFlux
-                self.error = np.sqrt(self.error**2 + current_spec_interpError**2)
-                self.spec = np.stack((self.wavelength, self.flux, self.error), axis=1)
+        spec2 = np.loadtxt(data_dir+"MaStar_specLum_cuts/"+self.file2, skiprows=1, delimiter=",")
+        self.wavelengthComponent2 = spec2[:,0]
+        self.fluxComponent2 = spec2[:,1]
+        self.errorComponent2 = spec2[:,2]
+        self.specComponent2 = np.stack((self.wavelengthComponent2, self.fluxComponent2, self.errorComponent2), axis=1)
+
+        self.wavelength, spec1_interpFlux = self._interpOntoGrid(self.wavelengthComponent1, self.fluxComponent1)
+        self.wavelength, spec1_interpError = self._interpOntoGrid(self.wavelengthComponent1, self.errorComponent1)
+
+        self.wavelength, spec2_interpFlux = self._interpOntoGrid(self.wavelengthComponent2, self.fluxComponent2)
+        self.wavelength, spec2_interpError = self._interpOntoGrid(self.wavelengthComponent2, self.errorComponent2)
+
+        self.flux = spec1_interpFlux + spec2_interpFlux
+        self.error = np.sqrt(spec1_interpError**2 + spec2_interpError**2)
+        self.spec = np.stack((self.wavelength, self.flux, self.error), axis=1)
 
     def saveCompositeSB2(self, filename=None):
             if filename == None:
