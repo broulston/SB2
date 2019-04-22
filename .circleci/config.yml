@@ -7,11 +7,15 @@ jobs:
     steps:
       - checkout
       - run:
+          command: |  # use pipenv to install dependencies
+          sudo pip install pipenv
+          pipenv install
+      - run:
           name: Install dependencies for Python 3.7
           command: pip install astropy numpy scipy matplotlib pytest pytest-astropy pytest-xdist Cython jinja2
       - run:
           name: Run tests for Python 3.7
-          command: python testing_SB2.py "--durations=50"
+          command: pipenv run python testing_SB2.py "--durations=50"
 
 workflows:
   version: 2
