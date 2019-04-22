@@ -1,0 +1,9 @@
+astropy
+numpy
+scipy
+matplotlib
+pytest
+pytest-astropy
+pytest-xdist
+Cython
+jinja2
