@@ -145,8 +145,8 @@ class SB2(object):
         self.spec = np.stack((self.wavelength, self.flux, self.error), axis=1)
 
     def saveCompositeSB2(self, filename=None):
-        filename is None:
-        filename = self.spectype1+"+"+self.spectype2+".txt"
+        if filename is None:
+            filename = self.spectype1+"+"+self.spectype2+".txt"
 
         header = "wavelength, Lum[W], Lum_error [W]"
         np.savetxt(filename, self.spec, delimiter=",",
