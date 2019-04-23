@@ -131,8 +131,8 @@ class SB2(object):
         self.wavelength, spec1_interpFlux = self._interpOntoGrid(
             self.wavelengthComponent1, self.fluxComponent1)
 
-        self.wavelength, spec1_interpError = self._interpOntoGrid
-            (self.wavelengthComponent1, self.errorComponent1)
+        self.wavelength, spec1_interpError = self._interpOntoGrid(
+            self.wavelengthComponent1, self.errorComponent1)
 
         self.wavelength, spec2_interpFlux = self._interpOntoGrid(
             self.wavelengthComponent2, self.fluxComponent2)
