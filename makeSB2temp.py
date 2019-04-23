@@ -18,15 +18,15 @@ class SB2(object):
         self.specTypes = self.mastar[1].data.field('Guessed Spectral Type') 
         self.unique_specTypes = np.unique(self.specTypes)
 
-        if np.where(self.unique_specTypes == spectype1)[0].size==1
-           & np.where(self.unique_specTypes == spectype2)[0].size==1:
+        if (np.where(self.unique_specTypes == spectype1)[0].size==1 
+           & np.where(self.unique_specTypes == spectype2)[0].size==1):
             self.spectype1 = spectype1
             self.spectype2 = spectype2
             self.file1 = file1
             self.file2 = file2
         else:
-            if np.where(self.unique_specTypes == spectype1)[0].size==0 
-               & np.where(self.unique_specTypes == spectype2)[0].size==0:
+            if (np.where(self.unique_specTypes == spectype1)[0].size==0 
+               & np.where(self.unique_specTypes == spectype2)[0].size==0):
                 raise ValueError("spectype1 AND spectype2 are not a valid choice!")
 
             if np.where(self.unique_specTypes == spectype1)[0].size==0:
