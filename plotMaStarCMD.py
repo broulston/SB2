@@ -13,8 +13,8 @@ def splitSpecType(s):
     return head, tail
 
 
-main_dir = "/Users/benjaminroulston/Dropbox/Research/TDSS/"
-            + "Variable_Stars/WORKING_DIRECTORY/SB2_Composites/"
+main_dir = ("/Users/benjaminroulston/Dropbox/Research/TDSS/"
+            + "Variable_Stars/WORKING_DIRECTORY/SB2_Composites/")
 data_dir = "data/"
 
 mastar = fits.open(data_dir+'mastarall-gaia-v2_4_3_selfMatched.fits')
@@ -42,25 +42,26 @@ for ii, ID in enumerate(MANGAID):
     MANGAID_string = ID
     mjd_string = '{:0>5}'.format(str(np.int(MJD)))
     mastar_file_filenames.append(ra_string + dec_string + "_"
-                                + mjd_string + "_" + MANGAID_string)
+                                    + mjd_string + "_" + MANGAID_string)
 
-mastar_file_filenames = np.array(mastar_file_filenames)  
+mastar_file_filenames = np.array(mastar_file_filenames)
 
 outputDIR = main_dir+"MaStar_specLum/"
 all_filenames = np.genfromtxt(data_dir+"all_MaStar_spec.txt", dtype='str')
 
 PyHammerResult = np.genfromtxt(data_dir+"PyHammerResults_MaStar.csv",
-                                dtype='str', delimiter=",")
+                               dtype='str', delimiter=",")
 PyHammerResultCondensed = PyHammerResult[:, 0:4:3]
 
 for ii in range(PyHammerResultCondensed[:, 0].size):
-    PyHammerResultCondensed[ii, 0] = PyHammerResultCondensed[ii, 0].replace("/", " ").split()[-1][:-4]
+    PyHammerResultCondensed[ii, 0] = PyHammerResultCondensed[ii, 0].replace(
+        "/", " ").split()[-1][:-4]
 
 mathced_types_to_mastar = np.empty(M_G.size, dtype="U3")
 for ii in range(mastar_file_filenames.size):
     try:
         index = np.where(PyHammerResultCondensed[:, 0]
-                        == mastar_file_filenames[ii])[0][0]
+                            == mastar_file_filenames[ii])[0][0]
         mathced_types_to_mastar[ii] = PyHammerResultCondensed[index, 1]
     except IndexError:
         print(mastar_file_filenames[ii])
@@ -76,8 +77,10 @@ for ii in range(spectypeNUM.size):
         current_specType = mathced_types_to_mastar[ii]
         current_mainspecType, current_subType = splitSpecType(current_specType)
         current_subType = np.int(current_subType)
-        spectypeNUM[ii] = np.where(specType_toNUM_alph == current_mainspecType)[0][0]
-                                    * 10 + current_subType
+        spectypeNUM[ii] = (np.where(
+                                    specType_toNUM_alph == current_mainspecType
+                                    )[0][0]
+                                    * 10 + current_subType)
     except ValueError:
         spectypeNUM[ii] = -1
 
@@ -94,7 +97,8 @@ cbar1.ax.get_yaxis().labelpad = 15
 cbar1.ax.set_ylabel('SpecType', rotation=270)
 cbar1.set_ticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90])
 cbar1.set_ticklabels(['O', 'B', 'A', 'F', 'G', 'K', 'M', 'L', 'C', 'WD'])
-# plt.scatter(np.log10(all_Per_ls[this_object_index]), np.log10(all_Amp_ls[this_object_index]),
+# plt.scatter(np.log10(all_Per_ls[this_object_index]),
+# np.log10(all_Amp_ls[this_object_index]),
 # s=150.0, marker="X", color=single_point_color, edgecolors='red')
 # ax = plt.gca()
 ax.invert_yaxis()
