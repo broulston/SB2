@@ -81,29 +81,29 @@ for ii in range(spectypeNUM.size):
 usable_spec_index = np.where(spectypeNUM != -1)[0]
 
 cm = plt.cm.get_cmap('viridis')
-sc = plt.scatter(BP_RP[usable_spec_index], M_G[usable_spec_index], s=5, c=spectypeNUM[usable_spec_index], cmap=cm)#, vmin=-1, vmax=1)
+sc = plt.scatter(BP_RP[usable_spec_index], M_G[usable_spec_index], s=5,
+                 c=spectypeNUM[usable_spec_index], cmap=cm)
 ax = plt.gca()
 divider1 = make_axes_locatable(ax)  
 cax1 = divider1.append_axes("right", size="5%", pad=0.05)
 cbar1 = plt.colorbar(sc, cax=cax1)
 cbar1.ax.get_yaxis().labelpad = 15
 cbar1.ax.set_ylabel('SpecType', rotation=270)
-cbar1.set_ticks([0,10,20,30,40,50,60,70,80,90])
+cbar1.set_ticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90])
 cbar1.set_ticklabels(['O', 'B', 'A', 'F', 'G', 'K', 'M', 'L', 'C', 'WD'])
-#single_point_color = cbar1.to_rgba(all_skewness[this_object_index])#np.array(cbar1.to_rgba(all_skewness[this_object_index], bytes=True)).reshape((1,4))
-#plt.scatter(np.log10(all_Per_ls[this_object_index]), np.log10(all_Amp_ls[this_object_index]), s=150.0, marker="X", color=single_point_color, edgecolors='red')
-#ax = plt.gca()
+# single_point_color = cbar1.to_rgba(all_skewness[this_object_index])#np.array(cbar1.to_rgba(all_skewness[this_object_index], bytes=True)).reshape((1,4))
+# plt.scatter(np.log10(all_Per_ls[this_object_index]), np.log10(all_Amp_ls[this_object_index]), s=150.0, marker="X", color=single_point_color, edgecolors='red')
+# ax = plt.gca()
 ax.invert_yaxis() 
 ax.set_xlabel('BP - RP')
 ax.set_ylabel('M$_{G}$')
 plt.savefig("MaStar_CMD_spectypes.eps",dpi=600)
-#plt.show()
+# plt.show()
 plt.clf()
 plt.close()
 
-
-
-col1 = fits.Column(name='SpecType', format='3A', array=mathced_types_to_mastar)
+col1 = fits.Column(name='SpecType', format='3A',
+                   array=mathced_types_to_mastar)
 coldefs = fits.ColDefs([col1])
 hdu = fits.BinTableHDU.from_columns(coldefs)
 
