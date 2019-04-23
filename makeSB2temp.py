@@ -51,8 +51,8 @@ class SB2(object):
 
         self.outputDIR = main_dir + "MaStar_specLum/"
         self.all_filenames = np.genfromtxt(data_dir
-                                + "all_MaStar_spec.txt",
-                                dtype='str')
+                                           + "all_MaStar_spec.txt",
+                                           dtype='str')
 
         self._makeCompositeSB2(self.file1, self.file2)
 

@@ -40,7 +40,7 @@ for ii, ID in enumerate(MANGAID):
     MANGAID_string = ID
     mjd_string = '{:0>5}'.format(str(np.int(MJD)))
     mastar_file_filenames.append(ra_string + dec_string + "_"
-        + mjd_string + "_" + MANGAID_string)
+                                 + mjd_string + "_" + MANGAID_string)
 
 mastar_file_filenames = np.array(mastar_file_filenames)
 
@@ -59,7 +59,7 @@ mathced_types_to_mastar = np.empty(M_G.size, dtype="U3")
 for ii in range(mastar_file_filenames.size):
     try:
         index = np.where(PyHammerResultCondensed[:, 0]
-                        == mastar_file_filenames[ii])[0][0]
+                         == mastar_file_filenames[ii])[0][0]
         mathced_types_to_mastar[ii] = PyHammerResultCondensed[index, 1]
     except IndexError:
         print(mastar_file_filenames[ii])
@@ -78,7 +78,7 @@ for ii in range(spectypeNUM.size):
         spectypeNUM[ii] = (np.where(
                                     specType_toNUM_alph == current_mainspecType
                                     )[0][0]
-                            * 10 + current_subType)
+                           * 10 + current_subType)
     except ValueError:
         spectypeNUM[ii] = -1
 

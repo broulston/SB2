@@ -46,14 +46,14 @@ for ii, ID in enumerate(MANGAID):
         MANGAID_string = ID
         mjd_string = '{:0>5}'.format(str(np.int(MJD)))
         filename_string = (ra_string + dec_string + "_"
-            + mjd_string + "_" + MANGAID_string)
+                           + mjd_string + "_" + MANGAID_string)
         spec = np.stack((wavelength, flux, error), axis=1)
         np.savetxt(orginal_outputDIR+filename_string+".txt", spec,
                    delimiter=",", header=header, fmt="%5.4f, %0.9e, %0.9e")
         Lum = 4.0*np.pi*1e-17 * (flux * wavelength * R_EST[ii].to(u.cm)**2)
         Lum = Lum.to(u.W)
         Lum_error = (4.0*np.pi*1e-17
-            * (error * wavelength * R_EST[ii].to(u.cm)**2))
+                     * (error * wavelength * R_EST[ii].to(u.cm)**2))
         Lum_error = Lum_error.to(u.W)
         all_Lums.append(Lum.sum()/const.L_sun)
         # print(Lum.sum()/const.L_sun)

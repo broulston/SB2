@@ -19,7 +19,7 @@ R_EST = mastar[1].data.field('R_EST')
 M_G = PHOT_G_MEAN_MAG + 5.0 - 5.0 * np.log10(R_EST)
 
 cut_index = np.where((gmag_SDSSDR12 > 15.5)
-                    & (imag_SDSSDR12 > 15.5) & (M_G > 5.0))[0]
+                     & (imag_SDSSDR12 > 15.5) & (M_G > 5.0))[0]
 
 
 MANGAID = mastar[1].data.field('MANGAID')[cut_index]
@@ -59,7 +59,7 @@ for ii, ID in enumerate(MANGAID):
         MANGAID_string = ID
         mjd_string = '{:0>5}'.format(str(np.int(MJD)))
         filename_string = (ra_string + dec_string + "_"
-                        + mjd_string + "_" + MANGAID_string)
+                           + mjd_string + "_" + MANGAID_string)
         spec = np.stack((wavelength, flux, error), axis=1)
         # plt.plot(wavelength, flux)
         np.savetxt(orginal_outputDIR+filename_string+".txt", spec,
