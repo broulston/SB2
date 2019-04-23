@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import astropy.units as u
 from astropy.table import Table
 
-main_dir = "/Users/benjaminroulston/Dropbox/Research/TDSS/Variable_Stars/WORKING_DIRECTORY/SB2_Composites/"
-data_dir ="data/"
+main_dir = "/Users/benjaminroulston/Dropbox/Research/TDSS/"
+            + "Variable_Stars/WORKING_DIRECTORY/SB2_Composites/"
+data_dir = "data/"
 
 mastar = fits.open(data_dir + 'mastarall-gaia-v2_4_3_SDSSDR12_specTypes.fits')
 mastarSpec = fits.open(main_dir + 'mastar-goodspec-v2_4_3-v1_0_2.fits')

@@ -13,27 +13,28 @@ class SB2(object):
     """
     def __init__(self, file1, spectype1, file2, spectype2):
         self.mastar = fits.open(data_dir
-            + 'mastarall-gaia-v2_4_3_SDSSDR12_specTypes.fits')
+             + 'mastarall-gaia-v2_4_3_SDSSDR12_specTypes.fits')
 
-        self.specTypes = self.mastar[1].data.field('Guessed Spectral Type') 
+        self.specTypes = self.mastar[1].data.field('Guessed Spectral Type')
         self.unique_specTypes = np.unique(self.specTypes)
 
-        if (np.where(self.unique_specTypes == spectype1)[0].size==1 
+        if (np.where(self.unique_specTypes == spectype1)[0].size==1
            & np.where(self.unique_specTypes == spectype2)[0].size==1):
             self.spectype1 = spectype1
             self.spectype2 = spectype2
             self.file1 = file1
             self.file2 = file2
         else:
-            if (np.where(self.unique_specTypes == spectype1)[0].size==0 
-               & np.where(self.unique_specTypes == spectype2)[0].size==0):
-                raise ValueError("spectype1 AND spectype2 are not a valid choice!")
+            if (np.where(self.unique_specTypes == spectype1)[0].size == 0 
+               & np.where(self.unique_specTypes == spectype2)[0].size == 0):
+                raise ValueError("spectype1 AND spectype2"
+                                 + "are not a valid choice!")
 
-            if np.where(self.unique_specTypes == spectype1)[0].size==0:
+            if np.where(self.unique_specTypes == spectype1)[0].size == 0:
                 raise ValueError("spectype1 is not a valid choice!")
 
-            if np.where(self.unique_specTypes == spectype2)[0].size==0:
-                raise ValueError( "spectype2 is not a valid choice!")
+            if np.where(self.unique_specTypes == spectype2)[0].size == 0:
+                raise ValueError("spectype2 is not a valid choice!")
 
         self.MANGAID = self.mastar[1].data.field('MANGAID')
         self.NVISITS = self.mastar[1].data.field('NVISITS')
@@ -46,11 +47,12 @@ class SB2(object):
         self.R_EST = self.mastar[1].data.field('R_EST') * u.pc
 
         self.outputDIR = main_dir + "MaStar_specLum/"
-        self.all_filenames = np.genfromtxt(data_dir + "all_MaStar_spec.txt", dtype='str')
+        self.all_filenames = np.genfromtxt(data_dir
+                                        + "all_MaStar_spec.txt", dtype='str')
 
         self._makeCompositeSB2(self.file1, self.file2)
 
-    def _interpOntoGrid(self, wavelength, flux): 
+    def _interpOntoGrid(self, wavelength, flux):
         """
         Description:
             A method to put the spectrum flux and variance onto the same
@@ -60,7 +62,8 @@ class SB2(object):
         self.waveGrid = 10**(5*0.43429448190325182 / 299792.458
                              * np.arange(0, 65000) + 3.55)
 
-        interpFlux = np.interp(self.waveGrid, wavelength, flux, right=np.nan, left=np.nan)
+        interpFlux = np.interp(self.waveGrid, wavelength,
+                               flux, right=np.nan, left=np.nan)
 
         # cut the grids off at 3650 and 10200 like the templates
         startIndex = bisect.bisect_right(self.waveGrid, 3650)
@@ -76,12 +79,12 @@ class SB2(object):
             plotIndividual=True, filename=None):
         if plotIndividual:
             plt.plot(self.wavelengthComponent1, self.fluxComponent1,
-                    label=self.spectype1)
+                     label=self.spectype1)
             plt.plot(self.wavelengthComponent2, self.fluxComponent2,
                      label=self.spectype2)
             plt.plot(self.wavelength, self.flux, label='combined')
             plt.legend(loc='best')
-            plt.xlabel("Wavelength [$\AA$]")
+            plt.xlabel(r"Wavelength [$\AA$]")
             plt.ylabel("Luminosity [W]")
             if filename is None:
                 filename = self.spectype1 + "+" + self.spectype2 + ".eps"
@@ -93,7 +96,7 @@ class SB2(object):
             plt.close()
         else:          
             plt.plot(self.wavelength, self.flux)
-            plt.xlabel("Wavelength [$\AA$]")
+            plt.xlabel(r"Wavelength [$\AA$]")
             plt.ylabel("Luminosity [W]")
             if filename is None:
                 filename = self.spectype1 + "+" + self.spectype2 + ".eps"
@@ -126,7 +129,8 @@ class SB2(object):
         self.errorComponent2 = spec2[:, 2]
 
         self.specComponent2 = np.stack(
-            (self.wavelengthComponent2, self.fluxComponent2, self.errorComponent2), axis=1)
+            (self.wavelengthComponent2, self.fluxComponent2,
+            self.errorComponent2), axis=1)
 
         self.wavelength, spec1_interpFlux = self._interpOntoGrid(
             self.wavelengthComponent1, self.fluxComponent1)
