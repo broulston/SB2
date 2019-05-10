@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 .DS_Store
 astropy_config.yml
+data/composites/plots/
