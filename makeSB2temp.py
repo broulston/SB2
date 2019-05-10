@@ -15,8 +15,9 @@ class SB2(object):
     def __init__(self, file1, spectype1, file2, spectype2):
         self.mastar = fits.open(data_dir
                                 + "mastarall-gaia-v2_4_3_"
-                                + "specTypes_SDSSDR12_"
-                                + "ALLFILEcuts.fits")
+                                + "specTypes_PS1_SDSSDR12_"
+                                + "ALLFILEcutsFilename_"
+                                + "parallaxSNR.fits")
 
         self.specTypes = self.mastar[1].data.field('SpecType')
         self.unique_specTypes = np.unique(self.specTypes)
