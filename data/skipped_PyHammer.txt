@@ -1,0 +1,12 @@
+FILE: /Users/benjaminroulston/Dropbox/Research/TDSS/Variable_Stars/WORKING_DIRECTORY/SB2_Composites/MaStar_spec/053.93485+000.83642_57785_3-90367739.txt
+REASON: Could not find radial velocity. Error Message: local variable 'tempName' referenced before assignment
+
+FILE: /Users/benjaminroulston/Dropbox/Research/TDSS/Variable_Stars/WORKING_DIRECTORY/SB2_Composites/MaStar_spec/082.41949+001.18934_57652_3-49017102.txt
+REASON: Could not find radial velocity. Error Message: local variable 'tempName' referenced before assignment
+
+FILE: /Users/benjaminroulston/Dropbox/Research/TDSS/Variable_Stars/WORKING_DIRECTORY/SB2_Composites/MaStar_spec/254.86082-021.86431_57823_3-125305632.txt
+REASON: Could not find radial velocity. Error Message: local variable 'tempName' referenced before assignment
+
+FILE: /Users/benjaminroulston/Dropbox/Research/TDSS/Variable_Stars/WORKING_DIRECTORY/SB2_Composites/MaStar_spec/294.97833+038.57046_57574_4-10653.txt
+REASON: Could not find radial velocity. Error Message: local variable 'tempName' referenced before assignment
+
