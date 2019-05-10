@@ -123,4 +123,5 @@ new_columns = new_hdu.columns + hdu.columns
 final_hdu = fits.BinTableHDU.from_columns(new_columns, name="ALLFILE")
 
 new_HDUList = fits.HDUList(hdus=[mastar[0], final_hdu])
-new_HDUList.writeto(data_dir+"mastarall-gaia-v2_4_3_specTypes_PS1_SDSSDR12_ALLFILE.fits", overwrite=True)
+new_HDUList.writeto(data_dir+"mastarall-gaia-v2_4_3_specTypes_PS1_"
+                    +"SDSSDR12_ALLFILEcutsFilename.fits", overwrite=True)

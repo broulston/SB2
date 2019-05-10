@@ -8,11 +8,11 @@ main_dir = ("/Users/benjaminroulston/Dropbox/Research/TDSS/"
             + "Variable_Stars/WORKING_DIRECTORY/SB2_Composites/")
 data_dir = "data/"
 
-mastar = fits.open(data_dir + 'mastarall-gaia-v2_4_3_SDSSDR12_specTypes.fits')
-mastarSpec = fits.open(main_dir + 'mastar-goodspec-v2_4_3-v1_0_2.fits')
+mastar = (fits.open(data_dir + "mastarall-gaia-v2_4_3_specTypes_PS1_SDSSDR12"
+                             +"_ALLFILEcutsFilename_parallaxSNR.fits"))
 
-mastar1_Table = Table.read(mastar[1])
-mastar2_Table = Table.read(mastar[2])
+mastar_Table = Table.read(mastar[1])
+
 
 PHOT_G_MEAN_MAG = mastar[1].data.field('PHOT_G_MEAN_MAG')
 BP_RP = mastar[1].data.field('BP_RP')
@@ -28,7 +28,7 @@ DEC = mastar[1].data.field('OBJDEC')
 
 R_EST = mastar[1].data.field('R_EST') * u.pc
 
-specTypes = mastar[1].data.field('Guessed Spectral Type')
+specTypes = mastar[1].data.field('SpecType')
 unique_specTypes = np.unique(specTypes)
 
 specType_SB2_combos = np.array(np.meshgrid(unique_specTypes,
