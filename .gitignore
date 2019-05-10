@@ -104,5 +104,7 @@ venv.bak/
 .mypy_cache/
 .DS_Store
 astropy_config.yml
-data/composites/plots/
+data/composites/
+data/MaStar_spec_cuts/
+data/MaStar_specLum_cuts/
 *.eps
