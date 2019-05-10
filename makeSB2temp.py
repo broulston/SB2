@@ -8,7 +8,6 @@ main_dir = ("/Users/benjaminroulston/Dropbox/Research/TDSS/"
             + "Variable_Stars/WORKING_DIRECTORY/SB2_Composites/")
 data_dir = "data/"
 
-
 class SB2(object):
     """SB2 spectrum class
 
@@ -16,9 +15,10 @@ class SB2(object):
     def __init__(self, file1, spectype1, file2, spectype2):
         self.mastar = fits.open(data_dir
                                 + "mastarall-gaia-v2_4_3_"
-                                + "SDSSDR12_specTypes.fits")
+                                + "specTypes_SDSSDR12_"
+                                + "ALLFILEcuts.fits")
 
-        self.specTypes = self.mastar[1].data.field('Guessed Spectral Type')
+        self.specTypes = self.mastar[1].data.field('SpecType')
         self.unique_specTypes = np.unique(self.specTypes)
 
         if (np.where(self.unique_specTypes == spectype1)[0].size == 1
@@ -51,7 +51,7 @@ class SB2(object):
 
         self.outputDIR = main_dir + "MaStar_specLum/"
         self.all_filenames = np.genfromtxt(data_dir
-                                           + "all_MaStar_spec.txt",
+                                           + "list_of_all_MaStar_specCUT.txt",
                                            dtype='str')
 
         self._makeCompositeSB2(self.file1, self.file2)
@@ -77,39 +77,6 @@ class SB2(object):
         flux = interpFlux[startIndex:stopIndex]
 
         return wavelength, flux
-
-    def plotCompositeSB2(
-            self, saveplot=True,
-            plotIndividual=True, filename=None):
-        if plotIndividual:
-            plt.plot(self.wavelengthComponent1, self.fluxComponent1,
-                     label=self.spectype1)
-            plt.plot(self.wavelengthComponent2, self.fluxComponent2,
-                     label=self.spectype2)
-            plt.plot(self.wavelength, self.flux, label='combined')
-            plt.legend(loc='best')
-            plt.xlabel(r"Wavelength [$\AA$]")
-            plt.ylabel("Luminosity [W]")
-            if filename is None:
-                filename = self.spectype1 + "+" + self.spectype2 + ".eps"
-            if saveplot:
-                plt.savefig(filename, dpi=600)
-            else:
-                plt.show()
-            plt.clf()
-            plt.close()
-        else:
-            plt.plot(self.wavelength, self.flux)
-            plt.xlabel(r"Wavelength [$\AA$]")
-            plt.ylabel("Luminosity [W]")
-            if filename is None:
-                filename = self.spectype1 + "+" + self.spectype2 + ".eps"
-            if saveplot:
-                plt.savefig(filename, dpi=600)
-            else:
-                plt.show()
-            plt.clf()
-            plt.close()
 
     def _makeCompositeSB2(self, spectype1, spectype2):
         self.flux = np.zeros(61617)
@@ -152,10 +119,59 @@ class SB2(object):
         self.error = np.sqrt(spec1_interpError**2 + spec2_interpError**2)
         self.spec = np.stack((self.wavelength, self.flux, self.error), axis=1)
 
-    def saveCompositeSB2(self, filename=None):
+        normFluxConst = self.flux[np.where(
+                                           abs(self.wavelength
+                                               - 8000.0)
+                                           == np.min(abs(self.wavelength 
+                                                         - 8000.0))
+                                           )[0]][0]
+        self.normedFlux = self.flux / normFluxConst
+        self.normederror = self.error / normFluxConst
+        self.normedspec = np.stack((self.wavelength, self.normedFlux, self.normederror), axis=1)
+
+    def plotCompositeSB2(
+            self, saveplot=True,
+            plotIndividual=True, filename=None, PyHammer=False):
+        flux_copy = self.flux.copy()
+        if PyHammer:
+            self.flux = self.normedFlux
+        if plotIndividual:
+            plt.plot(self.wavelengthComponent1, self.fluxComponent1,
+                     label=self.spectype1)
+            plt.plot(self.wavelengthComponent2, self.fluxComponent2,
+                     label=self.spectype2)
+            plt.plot(self.wavelength, self.flux, label='combined')
+            plt.legend(loc='best')
+            plt.xlabel(r"Wavelength [$\AA$]")
+            plt.ylabel("Luminosity [W]")
+            if filename is None:
+                filename = self.spectype1 + "+" + self.spectype2 + ".eps"
+            if saveplot:
+                plt.savefig(filename, dpi=600)
+            else:
+                plt.show()
+        else:
+            plt.plot(self.wavelength, self.flux)
+            plt.xlabel(r"Wavelength [$\AA$]")
+            plt.ylabel("Luminosity [W]")
+            if filename is None:
+                filename = self.spectype1 + "+" + self.spectype2 + ".eps"
+            if saveplot:
+                plt.savefig(filename, dpi=600)
+            else:
+                plt.show()
+        plt.clf()
+        plt.close()
+        self.flux = flux_copy
+
+    def saveCompositeSB2(self, filename=None, PyHammer=False):
         if filename is None:
             filename = self.spectype1+"+"+self.spectype2+".txt"
 
-        header = "wavelength, Lum[W], Lum_error [W]"
-        np.savetxt(filename, self.spec, delimiter=",",
-                   header=header, fmt="%5.4f, %0.9e, %0.9e")
+        header = "wavelength, Lum, Lum_error"
+        if PyHammer:
+            np.savetxt(filename, self.normedspec, delimiter=",",
+                       header=header, fmt="%5.4f, %0.9e, %0.9e")
+        else:
+            np.savetxt(filename, self.spec, delimiter=",",
+                       header=header, fmt="%5.4f, %0.9e, %0.9e")

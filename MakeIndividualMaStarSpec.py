@@ -63,3 +63,8 @@ for ii, ID in enumerate(MANGAID):
                    delimiter=",", header=header, fmt="%5.4f, %0.9e, %0.9e")
 
 progress.done()
+
+all_filenames_array = np.array(all_filenames)
+
+np.savetxt(data_dir+"list_of_all_MaStar_spec.txt", all_filenames_array,
+           delimiter=",", fmt="%s")
