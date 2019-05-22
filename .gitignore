@@ -107,4 +107,5 @@ astropy_config.yml
 data/composites/
 data/MaStar_spec_cuts/
 data/MaStar_specLum_cuts/
+data/Levenhagen2017_data/
 *.eps
