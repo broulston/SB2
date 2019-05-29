@@ -105,6 +105,7 @@ venv.bak/
 .DS_Store
 astropy_config.yml
 data/composites/
+data/Astars/
 data/MaStar_spec_cuts/
 data/MaStar_specLum_cuts/
 data/Levenhagen2017_data/
