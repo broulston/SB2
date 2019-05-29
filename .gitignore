@@ -109,4 +109,7 @@ data/Astars/
 data/MaStar_spec_cuts/
 data/MaStar_specLum_cuts/
 data/Levenhagen2017_data/
+making_spectra_in_L/
+SB2_IndividualSpec/
+SB2_CompositeSpec/
 *.eps

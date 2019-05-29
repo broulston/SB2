@@ -1,5 +1,32 @@
+import importlib
+
 import makeSB2temp
-# "206.48379+001.07330_57057_4-21387.txt", "M0"
+
+importlib.reload(makeSB2temp)
+
+SB2 = makeSB2temp.SB2("226.76735+035.81285_57860_3-148400110.txt", "M1",
+                      "Lspect050g78n.dat", "WD4")
+SB2.plotCompositeSB2(saveplot=False)
+
+SB2 = makeSB2temp.SB2("226.76735+035.81285_57860_3-148400110.txt", "M1",
+                      "Lspect050g78n.dat", "WD4")
+SB2.plotCompositeSB2(saveplot=False)
+
+SB2 = makeSB2temp.SB2("226.76735+035.81285_57860_3-148400110.txt", "M1",
+                      "Lspect050g78n.dat", "WD4")
+SB2.plotCompositeSB2(saveplot=False)
+
+SB2 = makeSB2temp.SB2("226.76735+035.81285_57860_3-148400110.txt", "M1",
+                      "Lspect050g78n.dat", "WD4")
+SB2.plotCompositeSB2(saveplot=False)
+
+SB2 = makeSB2temp.SB2("226.76735+035.81285_57860_3-148400110.txt", "M1",
+                      "Lspect050g78n.dat", "WD4")
+SB2.plotCompositeSB2(saveplot=False)
+
+SB2 = makeSB2temp.SB2("226.76735+035.81285_57860_3-148400110.txt", "M1",
+                      "Lspect050g78n.dat", "WD4")
+SB2.plotCompositeSB2(saveplot=False)
 
 
 def test_makeSB2():
@@ -36,56 +63,52 @@ plt.clf()
 plt.close()
 
 composite_dir = "data/composites/"
-composite_plotdir = "data/composites/plots/"
+composite_plotdir = "data/composites/plotsL4/"
 
 # *** dM + WD ***
 SB2 = makeSB2temp.SB2("139.46845+021.74163_57738_7-5464872.txt", "M0",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"M0+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"M0+WD.txt")
+                      "Lspect040g78n.dat", "WD3")
+SB2.plotCompositeSB2(filename=composite_plotdir+"M0+WD3.eps")
+#SB2.saveCompositeSB2(filename=composite_dir+"M0+WD.txt")
 
 SB2 = makeSB2temp.SB2("227.12491+036.19676_57833_3-148660775.txt", "M1",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"M1+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"M1+WD.txt")
+                     "Lspect040g78n.dat", "WD3")
+SB2.plotCompositeSB2(filename=composite_plotdir+"M1+WD3.eps")
+#SB2.saveCompositeSB2(filename=composite_dir+"M1+WD.txt")
 
 SB2 = makeSB2temp.SB2("141.78483+055.58795_57712_3-152400105.txt", "M2",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"M2+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"M2+WD.txt")
+                      "Lspect040g78n.dat", "WD3")
+SB2.plotCompositeSB2(filename=composite_plotdir+"M2+WD3.eps")
+#SB2.saveCompositeSB2(filename=composite_dir+"M2+WD.txt")
 
 SB2 = makeSB2temp.SB2("226.54240+035.73449_57833_3-148270084.txt", "M3",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"M3+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"M3+WD.txt")
+                      "Lspect040g78n.dat", "WD3")
+SB2.plotCompositeSB2(filename=composite_plotdir+"M3+WD3.eps")
+#SB2.saveCompositeSB2(filename=composite_dir+"M3+WD.txt")
 
 SB2 = makeSB2temp.SB2("226.76735+035.81285_57860_3-148400110.txt", "M4",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"M4+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"M4+WD.txt")
+                      "Lspect040g78n.dat", "WD3")
+SB2.plotCompositeSB2(filename=composite_plotdir+"M4+WD3.eps")
+#SB2.saveCompositeSB2(filename=composite_dir+"M4+WD.txt")
 
 # *** K + WD ***
 SB2 = makeSB2temp.SB2("137.54807+021.89058_57058_4-4333.txt", "K2",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"K2+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"K2+WD.txt")
+                      "Lspect040g78n.dat", "WD3")
+SB2.plotCompositeSB2(filename=composite_plotdir+"K2+WD3.eps")
+#SB2.saveCompositeSB2(filename=composite_dir+"K2+WD.txt")
 
 SB2 = makeSB2temp.SB2("190.99932-003.46924_57447_3-109319870.txt", "K3",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"K3+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"K3+WD.txt")
+                      "Lspect040g78n.dat", "WD3")
+SB2.plotCompositeSB2(filename=composite_plotdir+"K3+WD3.eps")
+#SB2.saveCompositeSB2(filename=composite_dir+"K3+WD.txt")
 
 SB2 = makeSB2temp.SB2("161.98968-002.75814_57435_3-110441670.txt", "K4",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"K4+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"K4+WD.txt")
+                      "Lspect040g78n.dat", "WD3")
+SB2.plotCompositeSB2(filename=composite_plotdir+"K4+WD3.eps")
+#SB2.saveCompositeSB2(filename=composite_dir+"K4+WD.txt")
 
 SB2 = makeSB2temp.SB2("176.62262+001.35084_57058_4-19883.txt", "K5",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"K5+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"K5+WD.txt")
+                      "Lspect040g78n.dat", "WD3")
+SB2.plotCompositeSB2(filename=composite_plotdir+"K5+WD3.eps")
+#SB2.saveCompositeSB2(filename=composite_dir+"K5+WD.txt")
 
-SB2 = makeSB2temp.SB2("191.10181+012.82911_57059_4-20296.txt", "K7",
-                      "143.03409+026.79849_57474_4-2071.txt", "WD5")
-SB2.plotCompositeSB2(filename=composite_plotdir+"K7+WD.eps")
-SB2.saveCompositeSB2(filename=composite_dir+"K7+WD.txt")
