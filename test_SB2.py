@@ -6,8 +6,8 @@ def test_makeSB2():
     spectype1 = "C2"
     spectype2 = "WD3"
 
-    filename1 = spectype1 + ".fits"
-    filename2 = spectype2 + ".fits"
+    filename1 = "C/" + spectype1 + ".txt"
+    filename2 = "WD/" + spectype2 + ".txt"
 
     this_SB2 = SB2.SB2(individualSpec_dir + filename1, spectype1,
                        individualSpec_dir + filename2, spectype2)
