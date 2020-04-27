@@ -87,10 +87,6 @@ class SB2(object):
                                                0.8) & (Lratio <= 5.0))[
             0].shape[0] / Lratio.shape[0]
 
-        # delta = np.abs(spec1_interpFlux - spec2_interpFlux)
-        # checkPercent = 0.5#20%
-        # Lratio_20percent_20percent = np.where((delta <= np.abs(checkPercent*spec1_interpFlux)) | (delta <= np.abs(checkPercent*spec2_interpFlux)))[0].shape[0] / delta.shape[0]
-
         self.LratioPercent = Lratio_20percent_20percent
         if Lratio_20percent_20percent >= 0.2:
             self.flux = spec1_interpFlux + spec2_interpFlux
