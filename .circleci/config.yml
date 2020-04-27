@@ -3,31 +3,41 @@ version: 2.1
 jobs:
   testing:
     docker:
-      - image: quay.io/pypa/manylinux1_i686
+      - image: circleci/python:3.7.3
     steps:
       - checkout
       - run:
-          name: install freetype-devel
-          command: yum install freetype-devel
-      - run:
-          name: install pkg-config
-          command: yum install pkg-config
-      - run:
-          name: install libpng-devel
-          command: yum install libpng-devel
-      - run:
-          name: Install dependencies for Python 3.7
-          command: /opt/python/cp37-cp37m/bin/pip install astropy numpy scipy matplotlib pytest pytest-astropy pytest-xdist Cython jinja2
+          name: Install Python 3.7.3 dependicies 
+          command: |  #Install Python deps in a venv
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt
       - run:
           name: Run tests for Python 3.7
-          command: PYTHONHASHSEED=42 /opt/python/cp37-cp37m/bin/python testing_SB2.py "--durations=50"
+          command: |
+            . venv/bin/activate
+            pytest
+
+  pytest-flake8:
+    docker:
+      - image: circleci/python:3.7.3
+    steps:
+      - checkout
+      - run:
+          name: Install Python 3.7.3 dependicies
+          command: |  #Install Python deps in a venv
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/dev.txt
+      - run:
+          name: Run pytest-flake8
+          command: |
+            . venv/bin/activate
+            pytest --flake8
 
 workflows:
   version: 2.1
-  tests_and_docs:
+  build_and_test:
     jobs:
       - testing
-
-notify:
-  webhooks:
-    - url: https://giles.cadair.com/circleci 
+      - pytest-flake8
