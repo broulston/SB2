@@ -2,10 +2,6 @@ import numpy as np
 from astropy.io import fits
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-from matplotlib.gridspec import GridSpec
-import matplotlib.image as mpimg
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-import astropy.units as u
 import bisect
 
 
@@ -34,8 +30,8 @@ class SB2(object):
             wavelength grid as the templates (5 km/s equally spaced bins)
         """
         # Interpolate flux and variance onto the wavelength grid
-        self.waveGrid = 10**(5 * 0.43429448190325182 / 299792.458
-                             * np.arange(0, 65000) + 3.55)
+        self.waveGrid = 10**(5 * (0.43429448190325182 / 299792.458) *
+                             np.arange(0, 65000) + 3.55)
 
         interpFlux = np.interp(self.waveGrid, wavelength,
                                flux, right=np.nan, left=np.nan)
@@ -87,12 +83,13 @@ class SB2(object):
             self.wavelengthComponent2, self.errorComponent2)
 
         Lratio = spec1_interpFlux / spec2_interpFlux
-        Lratio_20percent_20percent = np.where((Lratio >= 0.8) & (Lratio <= 5.0))[
+        Lratio_20percent_20percent = np.where((Lratio >=
+                                               0.8) & (Lratio <= 5.0))[
             0].shape[0] / Lratio.shape[0]
 
-        #delta = np.abs(spec1_interpFlux - spec2_interpFlux)
+        # delta = np.abs(spec1_interpFlux - spec2_interpFlux)
         # checkPercent = 0.5#20%
-        #Lratio_20percent_20percent = np.where((delta <= np.abs(checkPercent*spec1_interpFlux)) | (delta <= np.abs(checkPercent*spec2_interpFlux)))[0].shape[0] / delta.shape[0]
+        # Lratio_20percent_20percent = np.where((delta <= np.abs(checkPercent*spec1_interpFlux)) | (delta <= np.abs(checkPercent*spec2_interpFlux)))[0].shape[0] / delta.shape[0]
 
         self.LratioPercent = Lratio_20percent_20percent
         if Lratio_20percent_20percent >= 0.2:
@@ -101,12 +98,8 @@ class SB2(object):
             self.spec = np.stack(
                 (self.wavelength, self.flux, self.error), axis=1)
 
-            normFluxConst = self.flux[np.where(
-                abs(self.wavelength
-                    - 8000.0)
-                == np.min(abs(self.wavelength
-                              - 8000.0))
-            )[0]][0]
+            normFluxConst = self.flux[np.argmin(np.abs(self.wavelength -
+                                                       8000.0))]
             self.normedFlux = self.flux / normFluxConst
             self.normederror = self.error / normFluxConst
             self.normedspec = np.stack(
@@ -114,18 +107,19 @@ class SB2(object):
             self.isCOMBO = True
         else:
             self.isCOMBO = False
-            #raise ValueError('This combo is invalid', self.spectype1, self.spectype2)
+            # raise ValueError('This combo is invalid', self.spectype1,
+            #                  self.spectype2)
 
     def plotCompositeSB2(
             self, saveplot=True,
             plotIndividual=True, filename=None, PyHammer=False):
         xmin = 3800
         xmax = 9000
-        sig_range = 3.0
+        # sig_range = 3.0
         xmajor_tick_space = 1000
         xminor_tick_space = 100
-        ymajor_tick_space = 2
-        yminor_tick_space = 0.5
+        # ymajor_tick_space = 2
+        # yminor_tick_space = 0.5
         flux_copy = self.flux.copy()
         if PyHammer:
             self.flux = self.normedFlux
@@ -133,7 +127,11 @@ class SB2(object):
             plt.plot(self.wavelengthComponent1, self.fluxComponent1,
                      label=self.spectype1, linewidth=0.50, color='#0392ff')
             plt.plot(self.wavelengthComponent2, self.fluxComponent2,
-                     label=self.spectype2, linewidth=0.50, color=(0.22745098039215686, 0.6901960784313725, 0.011764705882352941, 1.0))
+                     label=self.spectype2, linewidth=0.50,
+                     color=(0.22745098039215686,
+                            0.6901960784313725,
+                            0.011764705882352941,
+                            1.0))
             plt.plot(self.wavelength, self.flux, label='combined',
                      linewidth=0.5, color='#ff1c03')
             plt.legend(loc='best')
@@ -183,12 +181,6 @@ class SB2(object):
             hdu1 = fits.BinTableHDU().from_columns(
                 [c1, c2, c3, c4], name='SpecTemp')
             hduList.append(hdu1)
-            # c5 = fits.Column(name='u-g', array=colors[:,0], format='E')
-            # c6 = fits.Column(name='g-r', array=colors[:,1], format='E')
-            # c7 = fits.Column(name='r-i', array=colors[:,2], format='E')
-            # c8 = fits.Column(name='i-z', array=colors[:,3], format='E')
-            # hdu2 = fits.BinTableHDU().from_columns([c5, c6, c7, c8], name='Colors')
-            # hduList.append(hdu2)
             hduList.writeto(filename + ".fits", overwrite=True)
         if saveMethod == 'Lum' or saveMethod == 'both':
             np.savetxt(filename + ".txt", self.spec, delimiter=",",
