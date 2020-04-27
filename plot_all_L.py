@@ -32,7 +32,8 @@ def smoothFlux(flux):
     # added recently and not everyone will have the latest numpy version
     def nancumsum(x):
         return np.ma.masked_array(x,
-                                  mask=(np.isnan(x) | np.isinf(x))).cumsum().filled(np.nan)
+                                  mask=(np.isnan(x) |
+                                        np.isinf(x))).cumsum().filled(np.nan)
     N = max(int(len(flux) / 600), 20)
     cumsum = nancumsum(np.insert(flux, 0, 0))
     smoothFlux = (cumsum[N:] - cumsum[:-N]) / N
