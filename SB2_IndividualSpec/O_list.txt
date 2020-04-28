@@ -1,2 +1,2 @@
-O/O5.txt
-O/O9.txt
+O/O5.fits
+O/O9.fits

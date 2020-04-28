@@ -1,5 +1,0 @@
-A/A0.txt
-A/A2.txt
-A/A3.txt
-A/A5.txt
-A/A7.txt

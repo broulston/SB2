@@ -1,5 +1,5 @@
-A/A0.txt
-A/A2.txt
-A/A3.txt
-A/A5.txt
-A/A7.txt
+A/A0.fits
+A/A2.fits
+A/A3.fits
+A/A5.fits
+A/A7.fits

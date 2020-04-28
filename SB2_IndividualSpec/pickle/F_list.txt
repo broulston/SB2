@@ -1,5 +1,0 @@
-F/f0v.txt
-F/f2v.txt
-F/f5v.txt
-F/f6v.txt
-F/f8v.txt

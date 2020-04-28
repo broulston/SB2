@@ -1,3 +1,0 @@
-C/C0.txt
-C/C1.txt
-C/C2.txt

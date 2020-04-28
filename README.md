@@ -14,7 +14,7 @@
 
 `SB2` was created as a part of the v2.0.0 release of [PyHammer](https://github.com/BU-hammerTeam/PyHammer). More details of how the luminosity normalized spectra were created can be found in the corresponding paper [Roulston+2020 (in prep.)]().
 
-![Vi_plot](./LumSpec.png?raw=true)
+![LumSpecs](./resources/LumSpec.png?raw=true)
 
 The program simply takes input of the spectral types (with paths) and then computes if the luminosity values are within a specific range. If they are, the SB2 is created. The user can change any of these parameters to allow SB2s to always be made. 
 
@@ -33,6 +33,6 @@ this_SB2.saveCompositeSB2()
 ```
 
 ---
-![Vi_plot](./C2+WD3.png?raw=true)
+![ExampleSB2](./resources/C2+WD3.png?raw=true)
 
 
