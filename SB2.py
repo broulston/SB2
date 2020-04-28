@@ -31,8 +31,12 @@ class SB2(object):
             wavelength grid as the templates (5 km/s equally spaced bins)
         """
         # Interpolate flux and variance onto the wavelength grid
-        self.waveGrid = 10**(5 * (0.43429448190325182 / 299792.458) *
-                             np.arange(0, 65000) + 3.55)
+        waveStart = 3_550
+        waveEnd = 10_500
+        waveNum = 65_000
+        # 65,000 wavelengths gives 5km/s resolution across this region
+        # dv = 2.9979e5 * (np.diff(waveGrid) / waveGrid[1:])
+        self.waveGrid = np.logspace(np.log10(waveStart), np.log10(waveEnd), num=waveNum)
 
         interpFlux = np.interp(self.waveGrid, wavelength,
                                flux, right=np.nan, left=np.nan)
