@@ -1,5 +1,5 @@
 import numpy as np
-
+from astropy.io import fits
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
@@ -65,19 +65,23 @@ fig = plt.figure(figsize=(6, 9))
 for ii, spectype_filename in enumerate(filenames):
     spectype = spectype_filename.replace("/", " ").split()[0]
     this_color = colors[np.where(specType_order == spectype)[0][0]]
-    data = np.loadtxt("SB2_IndividualSpec/" + spectype_filename,
-                      delimiter=",", skiprows=1)
+    data = fits.open("SB2_IndividualSpec/" + spectype_filename)
+    lam = data[1].data['lam']
+    Lum = data[1].data['Lum']
+
+    smooth_lam = smoothFlux(lam)
+    smooth_Lum = smoothFlux(removeSdssStitchSpike(lam, Lum))
     first_of_spectype = (spectype != previous_spectype)
     if first_of_spectype:
-        plt.plot(smoothFlux(data[:, 0]), smoothFlux(removeSdssStitchSpike(
-            data[:, 0], data[:, 1])), color=this_color,
-            label=spectype, linewidth=1.0, zorder=1)
+        plt.plot(smooth_lam, smooth_Lum,
+                 color=this_color, label=spectype,
+                 linewidth=1.0, zorder=1)
         first_of_spectype = False
         previous_spectype = spectype
     else:
-        plt.plot(smoothFlux(data[:, 0]), smoothFlux(removeSdssStitchSpike(
-            data[:, 0], data[:, 1])), color=this_color,
-            linewidth=1.0, zorder=1)
+        plt.plot(smooth_lam, smooth_Lum,
+                 color=this_color,
+                 linewidth=1.0, zorder=1)
         previous_spectype = spectype
 
 plt.xlabel(r"Wavelength [$\rm{\AA}$]")
@@ -105,6 +109,6 @@ ax.yaxis.set_minor_locator(locmin)
 ax.yaxis.set_minor_formatter(ticker.NullFormatter())
 
 plt.tight_layout()
-plt.savefig("SB2_IndividualSpec/LumSpec.eps", dpi=600)
+plt.savefig("LumSpec.eps", dpi=600)
 plt.clf()
 plt.close()
