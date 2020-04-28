@@ -23,7 +23,7 @@ def run_SB2_combos(spec_list1, spec_list2,
             spectype2 = filename2.replace(
                 "/", " ").split()[1][:-4].replace("_", " ").split()[0].upper()
             this_SB2 = SB2(individualSpec_dir + filename1, spectype1,
-                               individualSpec_dir + filename2, spectype2)
+                           individualSpec_dir + filename2, spectype2)
             print(spectype1, spectype2, this_SB2.LratioPercent)
             if this_SB2.isCOMBO:
                 combinedFilename = (split_filename(filename1) +

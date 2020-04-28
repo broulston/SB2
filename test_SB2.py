@@ -10,7 +10,7 @@ def test_makeSB2():
     filename2 = "WD/" + spectype2 + ".txt"
 
     this_SB2 = SB2(individualSpec_dir + filename1, spectype1,
-                       individualSpec_dir + filename2, spectype2)
+                   individualSpec_dir + filename2, spectype2)
 
     if this_SB2.isCOMBO:
         combinedFilename = spectype1 + spectype2
