@@ -12,7 +12,7 @@
 
 `SB2` constructs spectra in natural units (i.e. Watts/&#x212B;) using GaiaDR2 distances. This is done using a library of luminosity normalized spectra. This library was created from a combination of the [MaStar](https://www.sdss.org/surveys/mastar/) survey from [SDSS-IV](https://www.sdss.org) and the [Pickles+1998](https://ui.adsabs.harvard.edu/abs/1998PASP..110..863P/abstract) library. The Pickles library was used for OBAF stars while MaStar and SDSS was used for the GKM, C, WD stars. 
 
-`SB2` was created as a part of the v2.0.0 release of [PyHammer](https://github.com/BU-hammerTeam/PyHammer). More details of how the luminosity normalized spectra were created can be found in the corresponding paper [Roulston+2020]()
+`SB2` was created as a part of the v2.0.0 release of [PyHammer](https://github.com/BU-hammerTeam/PyHammer). More details of how the luminosity normalized spectra were created can be found in the corresponding paper [Roulston+2020 (in prep.)]().
 
 ![Vi_plot](./LumSpec.png?raw=true)
 
