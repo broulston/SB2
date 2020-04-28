@@ -1,5 +1,6 @@
 import numpy as np
 from astropy.io import fits
+from astropy.table import Table
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import bisect
@@ -50,21 +51,19 @@ class SB2(object):
         self.wavelength = np.zeros(61617)
         self.error = np.zeros(61617)
 
-        spec1 = np.loadtxt(self.file1,
-                           skiprows=1, delimiter=",")
-        self.wavelengthComponent1 = spec1[:, 0]
-        self.fluxComponent1 = spec1[:, 1]
-        self.errorComponent1 = spec1[:, 2]
+        spec1 = fits.open(self.file1)
+        self.wavelengthComponent1 = spec1[1].data['lam']
+        self.fluxComponent1 = spec1[1].data['Lum']
+        self.errorComponent1 = spec1[1].data['LumErr']
 
         self.specComponent1 = np.stack(
             (self.wavelengthComponent1,
              self.fluxComponent1, self.errorComponent1), axis=1)
 
-        spec2 = np.loadtxt(self.file2,
-                           skiprows=1, delimiter=",")
-        self.wavelengthComponent2 = spec2[:, 0]
-        self.fluxComponent2 = spec2[:, 1]
-        self.errorComponent2 = spec2[:, 2]
+        spec2 = fits.open(self.file2)
+        self.wavelengthComponent2 = spec2[1].data['lam']
+        self.fluxComponent2 = spec2[1].data['Lum']
+        self.errorComponent2 = spec2[1].data['LumErr']
 
         self.specComponent2 = np.stack(
             (self.wavelengthComponent2, self.fluxComponent2,
@@ -165,19 +164,17 @@ class SB2(object):
     def saveCompositeSB2(self, filename=None, saveMethod='both'):
         if filename is None:
             filename = self.spectype1 + "+" + self.spectype2
-        header = "wavelength, Lum, Lum_error"
         if saveMethod == 'PyHammer' or saveMethod == 'both':
-            hduList = fits.HDUList()
-            c1 = fits.Column(name='LogLam', array=np.log10(
-                self.wavelength), format='E')
-            c2 = fits.Column(name='Flux', array=self.normedFlux, format='E')
-            c3 = fits.Column(
-                name='PropErr', array=self.normederror, format='E')
-            c4 = fits.Column(name='Std', array=self.normederror, format='E')
-            hdu1 = fits.BinTableHDU().from_columns(
-                [c1, c2, c3, c4], name='SpecTemp')
-            hduList.append(hdu1)
-            hduList.writeto(filename + ".fits", overwrite=True)
+            t = Table()
+            t['LogLam'] = np.log10(self.wavelength)
+            t['Flux'] = self.normedFlux
+            t['PropErr'] = self.normederror
+            t['Std'] = self.normederror
+            t.write(filename + ".fits", format='fits', overwrite=True)
         if saveMethod == 'Lum' or saveMethod == 'both':
-            np.savetxt(filename + ".txt", self.spec, delimiter=",",
-                       header=header, fmt="%5.4f, %0.9e, %0.9e")
+            t = Table()
+            t['Lam'] = self.wavelength
+            t['Lum'] = self.flux
+            t['LumVar'] = self.error**2
+            t['LumErr'] = self.error
+            t.write(filename + ".fits", format='fits', overwrite=True)

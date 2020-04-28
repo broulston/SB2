@@ -19,9 +19,9 @@ def run_SB2_combos(spec_list1, spec_list2,
             filename1 = filename1
             filename2 = filename2
             spectype1 = filename1.replace(
-                "/", " ").split()[1][:-4].replace("_", " ").split()[0].upper()
+                "/", " ").split()[1][:-5].replace("_", " ").split()[0].upper()
             spectype2 = filename2.replace(
-                "/", " ").split()[1][:-4].replace("_", " ").split()[0].upper()
+                "/", " ").split()[1][:-5].replace("_", " ").split()[0].upper()
             this_SB2 = SB2(individualSpec_dir + filename1, spectype1,
                            individualSpec_dir + filename2, spectype2)
             print(spectype1, spectype2, this_SB2.LratioPercent)
@@ -39,7 +39,7 @@ def run_SB2_combos(spec_list1, spec_list2,
 
 
 individualSpec_dir = "SB2_IndividualSpec/"
-compositeSpec_dir = "SB2_CompositeSpec_04-16-2020/"
+compositeSpec_dir = "SB2_CompositeSpec_04-27-2020/"
 
 spec_types = np.array(["O", "B", "A", "F", "G", "K", "M", "C", "WD"])
 
