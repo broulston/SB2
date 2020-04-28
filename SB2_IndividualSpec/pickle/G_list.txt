@@ -1,4 +1,0 @@
-G/G0.txt
-G/G2.txt
-G/G5.txt
-G/G8.txt
