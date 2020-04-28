@@ -1,5 +1,5 @@
-F/F0.txt
-F/F2.txt
-F/F5.txt
-F/F6.txt
-F/F8.txt
+F/F0.fits
+F/F2.fits
+F/F5.fits
+F/F6.fits
+F/F8.fits
