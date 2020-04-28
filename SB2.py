@@ -36,7 +36,9 @@ class SB2(object):
         waveNum = 65_000
         # 65,000 wavelengths gives 5km/s resolution across this region
         # dv = 2.9979e5 * (np.diff(waveGrid) / waveGrid[1:])
-        self.waveGrid = np.logspace(np.log10(waveStart), np.log10(waveEnd), num=waveNum)
+        self.waveGrid = np.logspace(np.log10(waveStart),
+                                    np.log10(waveEnd),
+                                    num=waveNum)
 
         interpFlux = np.interp(self.waveGrid, wavelength,
                                flux, right=np.nan, left=np.nan)
