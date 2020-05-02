@@ -39,7 +39,7 @@ def run_SB2_combos(spec_list1, spec_list2,
 
 
 individualSpec_dir = "SB2_IndividualSpec/"
-compositeSpec_dir = "SB2_CompositeSpec_04-27-2020/"
+compositeSpec_dir = "SB2_CompositeSpec_04-30-2020/"
 
 spec_types = np.array(["O", "B", "A", "F", "G", "K", "M", "C", "WD"])
 
