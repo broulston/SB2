@@ -176,7 +176,7 @@ class SB2(object):
             t['Flux'] = self.normedFlux
             t['PropErr'] = self.normederror
             t['Std'] = self.normederror
-            t.write(filename + ".fits", format='fits', overwrite=True)
+            t.write(filename + "_PyHammer.fits", format='fits', overwrite=True)
         if saveMethod == 'Lum' or saveMethod == 'both':
             t = Table()
             t['Lam'] = self.wavelength
