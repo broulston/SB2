@@ -66,7 +66,11 @@ for ii, spectype_filename in enumerate(filenames):
     spectype = spectype_filename.replace("/", " ").split()[0]
     this_color = colors[np.where(specType_order == spectype)[0][0]]
     data = fits.open("SB2_IndividualSpec/" + spectype_filename)
-    lam = data[1].data['lam']
+    try:
+        lam = data[1].data['lam']
+    except KeyError:
+        lam = 10.0**data[1].data['LogLam']
+
     Lum = data[1].data['Lum']
 
     smooth_lam = smoothFlux(lam)
