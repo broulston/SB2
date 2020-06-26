@@ -39,6 +39,9 @@ M/M4.fits
 M/M5.fits
 M/M6.fits
 M/M7.fits
+C/C0.fits
+C/C1.fits
+C/C2.fits
 WD/WD0.fits
 WD/WD1.fits
 WD/WD2.fits
@@ -49,6 +52,3 @@ WD/WD6.fits
 WD/WD7.fits
 WD/WD8.fits
 WD/WD9.fits
-C/C0.fits
-C/C1.fits
-C/C2.fits
