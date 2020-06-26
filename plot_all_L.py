@@ -1,5 +1,6 @@
 import numpy as np
 from astropy.io import fits
+import astropy.units as u
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
@@ -54,14 +55,14 @@ xmin = 3800
 xmax = 9000
 ymin = 2e17
 ymax = 5e27
-sig_range = 3.0
+
 xmajor_tick_space = 1000
 xminor_tick_space = 100
-ymajor_tick_space = 1e28
-yminor_tick_space = 1e27
 
 previous_spectype = ""
-fig = plt.figure(figsize=(6, 9))
+fig = plt.figure(figsize=(8, 9))
+ax1 = plt.gca()
+ax2 = ax1.twinx()
 for ii, spectype_filename in enumerate(filenames):
     spectype = spectype_filename.replace("/", " ").split()[0]
     this_color = colors[np.where(specType_order == spectype)[0][0]]
@@ -74,22 +75,52 @@ for ii, spectype_filename in enumerate(filenames):
     Lum = data[1].data['Lum']
 
     smooth_lam = smoothFlux(lam)
-    smooth_Lum = smoothFlux(removeSdssStitchSpike(lam, Lum))
+    # smooth_Lum_w = smoothFlux(removeSdssStitchSpike(lam, Lum))
+    # smooth_Lum_erg = (smooth_Lum_w * u.W / u.angstrom).to(u.erg / u.s / u.angstrom).value
+
+    smooth_Lum_erg = smoothFlux(removeSdssStitchSpike(lam, Lum))
+    smooth_Lum_w = (smooth_Lum_erg * u.erg / u.s / u.angstrom).to(u.W / u.angstrom).value
     first_of_spectype = (spectype != previous_spectype)
     if first_of_spectype:
-        plt.plot(smooth_lam, smooth_Lum,
-                 color=this_color, label=spectype,
-                 linewidth=1.0, zorder=1)
-        first_of_spectype = False
-        previous_spectype = spectype
+        if spectype=='WD':
+            ax1.plot(smooth_lam, smooth_Lum_erg,
+                     color=this_color, label='DA',
+                     linewidth=1.0, zorder=1)
+            ax2.plot(smooth_lam, smooth_Lum_w,
+                     color=this_color, label='DA',
+                     linewidth=1.0, zorder=1)
+            first_of_spectype = False
+            previous_spectype = spectype
+        elif spectype=='C':
+            ax1.plot(smooth_lam, smooth_Lum_erg,
+                     color=this_color, label='dC',
+                     linewidth=1.0, zorder=1)
+            ax2.plot(smooth_lam, smooth_Lum_w,
+                     color=this_color, label='dC',
+                     linewidth=1.0, zorder=1)
+            first_of_spectype = False
+            previous_spectype = spectype
+        else:
+            ax1.plot(smooth_lam, smooth_Lum_erg,
+                     color=this_color, label=spectype,
+                     linewidth=1.0, zorder=1)
+            ax2.plot(smooth_lam, smooth_Lum_w,
+                     color=this_color, label=spectype,
+                     linewidth=1.0, zorder=1)
+            first_of_spectype = False
+            previous_spectype = spectype
     else:
-        plt.plot(smooth_lam, smooth_Lum,
+        ax1.plot(smooth_lam, smooth_Lum_erg,
+                 color=this_color,
+                 linewidth=1.0, zorder=1)
+        ax2.plot(smooth_lam, smooth_Lum_w,
                  color=this_color,
                  linewidth=1.0, zorder=1)
         previous_spectype = spectype
 
-plt.xlabel(r"Wavelength [$\rm{\AA}$]")
-plt.ylabel(r"Luminosity [W $\rm{\AA}^{-1}}$]")
+ax1.set_xlabel("Wavelength [\AA]")
+ax1.set_ylabel("Luminosity [erg s$^{-1}$ \AA$^{-1}$]")
+ax2.set_ylabel("Luminosity [W \AA$^{-1}$]")
 # plt.legend(loc='best', ncol=3)
 leg = plt.legend(loc='best', ncol=3, frameon=False)
 # get the lines and texts inside legend box
@@ -98,21 +129,35 @@ leg_texts = leg.get_texts()
 # bulk-set the properties of all lines and texts
 plt.setp(leg_lines, linewidth=1.5)
 # plt.setp(leg_texts, fontsize='x-large')
-ax = plt.gca()
-ax.set_yscale('log')
-ax.set_xlim([xmin, xmax])
-ax.set_ylim([ymin, ymax])
-ax.xaxis.set_major_locator(ticker.MultipleLocator(xmajor_tick_space))
-ax.xaxis.set_minor_locator(ticker.MultipleLocator(xminor_tick_space))
+ax1.set_yscale('log')
+ax2.set_yscale('log')
+
+ax1.set_xlim([xmin, xmax])
+ax1.set_ylim([(ymin * u.W).to(u.erg / u.s).value,
+              (ymax * u.W).to(u.erg / u.s).value])
+
+ax2.set_xlim([xmin, xmax])
+ax2.set_ylim([ymin, ymax])
+
+ax1.xaxis.set_major_locator(ticker.MultipleLocator(xmajor_tick_space))
+ax1.xaxis.set_minor_locator(ticker.MultipleLocator(xminor_tick_space))
 
 locmaj = ticker.LogLocator(base=10.0, subs=(1.0, ), numticks=100)
-ax.yaxis.set_major_locator(locmaj)
+ax1.yaxis.set_major_locator(locmaj)
+
+locmaj = ticker.LogLocator(base=10.0, subs=(1.0, ), numticks=100)
+ax2.yaxis.set_major_locator(locmaj)
 
 locmin = ticker.LogLocator(base=10.0, subs=np.arange(2, 10) * .1, numticks=100)
-ax.yaxis.set_minor_locator(locmin)
-ax.yaxis.set_minor_formatter(ticker.NullFormatter())
+ax1.yaxis.set_minor_locator(locmin)
+
+locmin = ticker.LogLocator(base=10.0, subs=np.arange(2, 10) * .1, numticks=100)
+ax2.yaxis.set_minor_locator(locmin)
+
+ax2.yaxis.set_minor_formatter(ticker.NullFormatter())
+ax1.yaxis.set_minor_formatter(ticker.NullFormatter())
 
 plt.tight_layout()
-plt.savefig("LumSpec.eps", dpi=600)
+plt.savefig("LumSpec.pdf", dpi=600)
 plt.clf()
 plt.close()

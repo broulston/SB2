@@ -136,8 +136,8 @@ class SB2(object):
             plt.plot(self.wavelength, self.flux, label='combined',
                      linewidth=0.5, color='#ff1c03')
             plt.legend(loc='best')
-            plt.xlabel(r"Wavelength [$\rm{\AA}$]")  # , fontdict=font)
-            plt.ylabel(r"Luminosity [W $\rm{\AA}_{-1}$]")
+            plt.xlabel("Wavelength [\AA]")  # , fontdict=font)
+            plt.ylabel("Luminosity [erg s$^{-1}$ \AA$^{-1}$]")
             ax = plt.gca()
             ax.set_xlim([xmin, xmax])
             # ax.set_yscale('log')
@@ -148,17 +148,17 @@ class SB2(object):
                 ticker.MultipleLocator(xminor_tick_space))
 
             if filename is None:
-                filename = self.spectype1 + "+" + self.spectype2 + ".eps"
+                filename = self.spectype1 + "+" + self.spectype2 + ".pdf"
             if saveplot:
                 plt.savefig(filename, dpi=600)
             else:
                 plt.show()
         else:
             plt.plot(self.wavelength, self.flux)
-            plt.xlabel(r"Wavelength [$\AA$]")
-            plt.ylabel("Luminosity [W]")
+            plt.xlabel("Wavelength [\AA]")  # , fontdict=font)
+            plt.ylabel("Luminosity [erg s$^{-1}$ \AA$^{-1}$]")
             if filename is None:
-                filename = self.spectype1 + "+" + self.spectype2 + ".eps"
+                filename = self.spectype1 + "+" + self.spectype2 + ".pdf"
             if saveplot:
                 plt.savefig(filename, dpi=600)
             else:

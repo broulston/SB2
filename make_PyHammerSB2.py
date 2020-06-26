@@ -33,13 +33,13 @@ def run_SB2_combos(spec_list1, spec_list2,
                 this_SB2.plotCompositeSB2(filename=compositeSpec_dir +
                                           "plots/" +
                                           combinedFilename +
-                                          ".eps")
+                                          ".pdf")
                 this_SB2.saveCompositeSB2(filename=compositeSpec_dir +
                                           combinedFilename)
 
 
 individualSpec_dir = "SB2_IndividualSpec/"
-compositeSpec_dir = "SB2_CompositeSpec_04-30-2020/"
+compositeSpec_dir = "SB2_CompositeSpec_05-08-2020/"
 
 spec_types = np.array(["O", "B", "A", "F", "G", "K", "M", "C", "WD"])
 
@@ -47,8 +47,10 @@ spec_types = np.array(["O", "B", "A", "F", "G", "K", "M", "C", "WD"])
 #                individualSpec_dir, compositeSpec_dir)
 
 for spectype1 in spec_types[:-1]:
+# for spectype1 in spec_types:
     print(f"Making {spectype1} star SB2s:")
     secondary_types = spec_types[np.where(spec_types == spectype1)[0][0] + 1:]
+    # secondary_types = spec_types[np.where(spec_types == spectype1)[0][0]:]
     for spectype2 in secondary_types:
         run_SB2_combos(f"{spectype1}_list.txt", f"{spectype2}_list.txt",
                        individualSpec_dir, compositeSpec_dir)
