@@ -1,0 +1,5 @@
+B/B0.fits
+B/B1.fits
+B/B3.fits
+B/B8.fits
+B/B9.fits

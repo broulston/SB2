@@ -1,0 +1,10 @@
+DA/DA0.5.fits
+DA/DA1.0.fits
+DA/DA1.5.fits
+DA/DA2.0.fits
+DA/DA2.5.fits
+DA/DA3.5.fits
+DA/DA5.0.fits
+DA/DA5.5.fits
+DA/DA6.5.fits
+DA/DA7.0.fits

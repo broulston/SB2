@@ -1,0 +1,7 @@
+K/K0.fits
+K/K1.fits
+K/K2.fits
+K/K3.fits
+K/K4.fits
+K/K5.fits
+K/K7.fits

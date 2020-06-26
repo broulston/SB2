@@ -1,0 +1,3 @@
+dC/dCG.fits
+dC/dCK.fits
+dC/dCM.fits

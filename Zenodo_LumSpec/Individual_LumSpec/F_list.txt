@@ -1,0 +1,5 @@
+F/F0.fits
+F/F2.fits
+F/F5.fits
+F/F6.fits
+F/F8.fits

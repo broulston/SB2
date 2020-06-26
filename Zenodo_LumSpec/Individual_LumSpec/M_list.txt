@@ -1,0 +1,8 @@
+M/M0.fits
+M/M1.fits
+M/M2.fits
+M/M3.fits
+M/M4.fits
+M/M5.fits
+M/M6.fits
+M/M7.fits

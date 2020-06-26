@@ -1,0 +1,9 @@
+G/G0.fits
+G/G1.fits
+G/G3.fits
+G/G4.fits
+G/G5.fits
+G/G6.fits
+G/G7.fits
+G/G8.fits
+G/G9.fits
